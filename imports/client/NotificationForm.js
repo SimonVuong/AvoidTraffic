@@ -3,7 +3,7 @@ import React from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import Autocomplete from 'react-google-autocomplete';
 
-function NotificationForm () {
+function NotificationForm (props) {
   return (
     <Form>
       <Form.Group>
@@ -11,7 +11,7 @@ function NotificationForm () {
           <label>From</label>
           <Autocomplete
             placeholder='Enter starting location'
-            onPlaceSelected={(place) => {console.log(place);}}
+            onPlaceSelected={props.onSelectFrom}
             types={['establishment', 'geocode']} /> {/*autocomplete places and addresses*/}
         </Form.Field>
       </Form.Group>
@@ -20,23 +20,23 @@ function NotificationForm () {
           <label>To</label>
           <Autocomplete
             placeholder='Enter destination location'
-            onPlaceSelected={(place) => {console.log(place);}}
+            onPlaceSelected={props.onSelectTo}
             types={['establishment', 'geocode']} />
         </Form.Field>
       </Form.Group>
-      Notify when the travel time is below
+      Notify me when the travel time is below...
       <Form.Group >
        <Form.Field
           width={6}
           control='Input'
-          label='hr'
+          label='Hr'
           type='number'
           placeholder='0'>
         </Form.Field>
         <Form.Field
           width={6}
           control='Input'
-          label='min'
+          label='Min'
           type='number'
           placeholder='0'>
         </Form.Field>
@@ -61,7 +61,7 @@ function NotificationForm () {
         </Form.Field>
       </Form.Group>
       {/*type=button to prevent submitting*/}
-      <Button type='button' primary>Set notification</Button>
+      <Button type='button' positive>Set notification</Button>
     </Form>
   )
 }
