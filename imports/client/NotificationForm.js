@@ -61,9 +61,10 @@ function NotificationForm (props) {
         </Form.Field>
       </Form.Group>
       {/*type=button to prevent submitting*/}
-      <Button type='button' positive>Set notification</Button>
+      <Button type='button' primary fluid>Set notification</Button>
     </Form>
   )
+  
 }
 
 export default NotificationForm;

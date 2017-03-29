@@ -1,7 +1,9 @@
 'use strict';
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
-import NotificationForm from './NotificationForm';
+import Content from './Content';
+
+//TODO next time: try to remove the *inputs* from the map. also, map bugs out when inputting a bad location
 
 class MainLayout extends React.Component {
 
@@ -34,10 +36,10 @@ class MainLayout extends React.Component {
 
     return (
         <Grid padded style={{height: 'inherit'}}>
-          <Grid.Column width={5}>
-            <NotificationForm onSelectFrom={this.onSelectFrom} onSelectTo={this.onSelectTo} />
+          <Grid.Column width={4}>
+            <Content onSelectFrom={this.onSelectForm} onSelectTo={this.onSelectTo}/>
           </Grid.Column>
-          <Grid.Column width={11} style={{padding: 0}}> {/*no padding so map is flush with screen*/}
+          <Grid.Column width={12} style={{padding: 0}}> {/*no padding so map is flush with screen*/}
             {/*TODO 99 percent because 100 creates scrollbar for some reason...*/}
             <iframe width='100%' height='99%' style={{border: 0}} src={src} />
           </Grid.Column>
