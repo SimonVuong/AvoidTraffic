@@ -8,7 +8,6 @@ import NotificationForm from './NotificationForm';
 // mutationObserver(no can't detect proper div mount. the ones that get added and detected
 //come before the map), componentDidUpdate (no because runsbefore map is rendered)
 class MainLayout extends React.Component {
-
   constructor (props) {
     super(props);
     //TODO initialize this to something more... friendly
@@ -34,47 +33,40 @@ class MainLayout extends React.Component {
 
   render () {
 
-    let content;
-    if (!this.state.fromPlaceId && !this.state.toPlaceId) {
-      content = (
-        <Header size='huge' textAlign='center' style={{fontSize: '60px', color: 'white', fontWeight: 400}} fontFamily='Raleway'>
-          Receive an alert when traffic decreases below a certain time
-        </Header>
+    let figure;
+    if (!this.state.fromPlaceId || !this.state.toPlaceId) {
+      figure = (
+        <Grid.Column verticalAlign='middle'>
+          <Header textAlign='center' style={{fontSize: '4.5em', color: '#FFFFFF', fontWeight: 400}} fontFamily='Raleway'>
+            Receive an alert when traffic is better
+          </Header>
+        </Grid.Column>
       )
     } else {
       let src='https://www.google.com/maps/embed/v1/directions?origin=place_id:' + this.state.fromPlaceId + 
       '&destination=place_id:' + this.state.toPlaceId + '&key=AIzaSyCMmu_dSLLqfqhlnGpLyuyQazYaG_m_Qcs';
-      content = <iframe width='100%' height='99%' style={{border: 0}} src={src} />;
+      //no border or padding so the map takes up the entire container
+      figure = <iframe width='100%' height='100%' style={{border: 0, padding: 0}} src={src} />;
     }
 
-
-
     return (
-        <Grid padded style={{height: 'inherit'}}>
-          <Grid.Column width={4} style={{background: '#f9fcff'}}> {/*TODO tie this color to css*/}
-            <NotificationForm onSelectFrom={this.onSelectForm} onSelectTo={this.onSelectTo}/>
-          </Grid.Column>
-          {/*no padding so map is flush with screen*/}
-          <Grid.Column 
-            width={12} 
-            style={{padding: 0}} 
-            style={{backgroundImage: 'url("/skySauna.jpg")', backgroundSize: 'cover'}}> 
-            
-            {/*figure out how to better center this...*/}
-            <Grid stretched style={{height: '100%'}}>
-              <Grid.Column verticalAlign='middle'>
-                {content}
-              </Grid.Column>
-            </Grid>
-            
-            
-            
-            
-          </Grid.Column>
-        </Grid>
-      )
+      <Grid padded style={{height: 'inherit'}}>
+        {/*padded so that there's space between edges and grid. get height of root (which gets height
+        of body) so that right content can be height of body*/}
+        <Grid.Column width={4}> {/*TODO tie this color to css*/}
+          <NotificationForm onSelectFrom={this.onSelectForm} onSelectTo={this.onSelectTo}/>
+        </Grid.Column>
+        {/*no padding so map is flush with screen*/}
+        <Grid.Column width={12} style={{padding: 0, backgroundImage: 'url("/skySauna.jpg")', backgroundSize: 'cover'}}> 
+          {/*margins 0 and height 100% to fill parent column height, then vertically center its column to make
+          content centered vertically */}
+          <Grid style={{height: '100%', margin: 0}}>
+            {figure}
+          </Grid>
+        </Grid.Column>
+      </Grid>
+    )
   }
-  
 }
 
 export default MainLayout;
