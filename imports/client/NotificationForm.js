@@ -1,70 +1,37 @@
-'use strict';
 import React from 'react';
-import { Form, Button } from 'semantic-ui-react';
-import Autocomplete from 'react-google-autocomplete';
+import { Grid, Header, Icon } from 'semantic-ui-react';
+import Form from './Form';
 
 function NotificationForm (props) {
   return (
-    <Form>
-      <Form.Group>
-        <Form.Field width={16}>
-          <label>From</label>
-          <Autocomplete
-            placeholder='Enter starting location'
-            onPlaceSelected={props.onSelectFrom}
-            types={['establishment', 'geocode']} /> {/*autocomplete places and addresses*/}
-        </Form.Field>
-      </Form.Group>
-      <Form.Group>
-       <Form.Field width={16}>
-          <label>To</label>
-          <Autocomplete
-            placeholder='Enter destination location'
-            onPlaceSelected={props.onSelectTo}
-            types={['establishment', 'geocode']} />
-        </Form.Field>
-      </Form.Group>
-      Notify me when the travel time is below...
-      <Form.Group >
-       <Form.Field
-          width={6}
-          control='Input'
-          label='Hr'
-          type='number'
-          placeholder='0'>
-        </Form.Field>
-        <Form.Field
-          width={6}
-          control='Input'
-          label='Min'
-          type='number'
-          placeholder='0'>
-        </Form.Field>
-      </Form.Group>
-      Notification method
-      <Form.Group >
-       <Form.Field
-          control='Input'
-          label='Email'
-          width={16}
-          type='Email'
-          placeholder='you@example.com'>
-        </Form.Field>
-      </Form.Group>
-      <Form.Group>
-        <Form.Field
-          control='Input'
-          label='Phone'
-          width={16}
-          type='text'
-          placeholder='(xxx) xxx-xxxx'>
-        </Form.Field>
-      </Form.Group>
-      {/*type=button to prevent submitting*/}
-      <Button type='button' primary fluid>Set notification</Button>
-    </Form>
+    <Grid columns={1}>
+      <Grid.Column style={{background: '#2185d0'}}>
+        <Header size='huge' style={{color: '#FFFFFF'}}>
+          <Header.Content>
+            Traffic Alert
+          </Header.Content>
+
+{/*}        dont need for now because will move to middle of page load 
+          <Header.Subheader style={{color: '#FFF5EE'}}>
+            Receive an alert when driving time is acceptable
+          </Header.Subheader> */}
+        </Header>
+      </Grid.Column>
+      <Grid.Column>
+        <Form onSelectFrom={props.onSelectFrom} onSelectTo={props.onSelectTo} />
+      </Grid.Column>
+      <Grid.Column>
+ {/*     <p style={{color: '#A9A9A9'}}>*Traffic Alert erases all data after a notification is 
+          sent or is expired. It does not share your information with third parties.
+        </p> */}
+      </Grid.Column>
+    </Grid>
+
+            
+            
+
+
   )
-  
 }
 
 export default NotificationForm;
