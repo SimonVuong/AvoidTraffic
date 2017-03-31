@@ -2,6 +2,10 @@ import { Meteor } from 'meteor/meteor';
 
 Meteor.methods({
   setNotification (fromPlaceId, toPlaceId, hr,  min,  email, phone) {
+    //TODO: add validation
+
+
+
     let count = 0;
     let timer;
 

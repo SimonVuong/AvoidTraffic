@@ -30,6 +30,7 @@ class MyForm extends React.Component {
   }
 
   render () {
+    //TODO: add validation
     return (
       <Form size='big'>
         <Form.Group>
@@ -42,7 +43,7 @@ class MyForm extends React.Component {
           </Form.Field>
         </Form.Group>
         <Form.Group>
-        <Form.Field width={16}>
+          <Form.Field width={16}>
             <label>To</label>
             <Autocomplete
               placeholder='Enter destination location'
@@ -52,33 +53,30 @@ class MyForm extends React.Component {
         </Form.Group>
         <p>Alert me when time is below...</p>
         <Form.Group>
-        <Form.Field
+          <Form.Field
             width={6}
             control='Input'
             label='Hr'
             type='number'
             placeholder='0'
-            onChange={(e) => this.onChange(e.target.value, 'hr')}>
-          </Form.Field>
+            onChange={(e) => this.onChange(e.target.value, 'hr')} />
           <Form.Field
             width={6}
             control='Input'
             label='Min'
             type='number'
             placeholder='0'
-            onChange={(e) => this.onChange(e.target.value, 'min')}>
-          </Form.Field>
+            onChange={(e) => this.onChange(e.target.value, 'min')} />
         </Form.Group>
         <p>Alert me by...</p>
         <Form.Group >
-        <Form.Field
+          <Form.Field
             control='Input'
             label='Email'
             width={16}
             type='Email'
             placeholder='you@example.com'
-            onChange={(e) => this.onChange(e.target.value, 'email')}>
-          </Form.Field>
+            onChange={(e) => this.onChange(e.target.value, 'email')} />
         </Form.Group>
         <Form.Group>
           <Form.Field
@@ -87,13 +85,12 @@ class MyForm extends React.Component {
             width={16}
             type='text'
             placeholder='(xxx) xxx-xxxx'
-            onChange={(e) => this.onChange(e.target.value, 'phone')}>
-          </Form.Field>
+            onChange={(e) => this.onChange(e.target.value, 'phone')} />
         </Form.Group>
         {/*type=button to prevent submitting*/}
         <Button type='button' fluid style={{backgroundColor: '#63A651', color: 'white'}} onClick={this.setNotification}>
           Set notification
-          </Button>
+        </Button>
       </Form>
     )
   }
