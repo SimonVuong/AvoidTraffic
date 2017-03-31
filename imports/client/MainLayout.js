@@ -54,7 +54,11 @@ class MainLayout extends React.Component {
         {/*padded so that there's space between edges and grid. get height of root (which gets height
         of body) so that right content can be height of body*/}
         <Grid.Column width={4}> {/*TODO tie this color to css*/}
-          <NotificationForm onSelectFrom={this.onSelectForm} onSelectTo={this.onSelectTo}/>
+          <NotificationForm
+            fromPlaceId={this.state.fromPlaceId}
+            toPlaceId={this.state.toPlaceId}
+            onSelectFrom={this.onSelectForm} 
+            onSelectTo={this.onSelectTo}/>
         </Grid.Column>
         {/*no padding so map is flush with screen*/}
         <Grid.Column width={12} style={{padding: 0, backgroundImage: 'url("/skySauna.jpg")', backgroundSize: 'cover'}}> 

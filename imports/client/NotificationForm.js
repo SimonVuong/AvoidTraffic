@@ -13,7 +13,11 @@ function NotificationForm (props) {
         </Header>
       </Grid.Column>
       <Grid.Column>
-        <Form onSelectFrom={props.onSelectFrom} onSelectTo={props.onSelectTo} />
+        <Form
+          fromPlaceId={props.fromPlaceId}
+          toPlaceId={props.toPlaceId}
+          onSelectFrom={props.onSelectFrom}
+          onSelectTo={props.onSelectTo} />
       </Grid.Column>
       <Grid.Column style={{color: '#A9A9A9', paddingTop: 0}}>
         *Traffic Alert erases all data after an alert is complete. It does not sell or rent your data.
