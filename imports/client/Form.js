@@ -25,7 +25,8 @@ class MyForm extends React.Component {
 
   setNotification () {
     let {hr, min, email, phone} = this.state;
-    Meteor.call('setNotification', this.props.fromPlaceId, this.props.toPlaceId, hr, min, email, phone);
+    let minSeconds = (hr * 3600) + (min * 60);
+    Meteor.call('setNotification', this.props.fromPlaceId, this.props.toPlaceId, minSeconds, email, phone);
     
   }
 

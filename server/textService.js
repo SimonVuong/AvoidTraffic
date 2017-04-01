@@ -8,7 +8,8 @@ const MY_NUMBER = '+16093859646'
 
 let textService = twilio(ACCOUNT_SID, AUTH_TOKEN);
 
-function sendText (number, message) {
+export default function sendText (number, message) {
+  console.log('in send text');
   textService.messages.create({
     to: '+16095138166',
     from: '+16093859646',
@@ -17,6 +18,7 @@ function sendText (number, message) {
     if (err) {
       console.log(err);
     } else {
+      console.log('sent message');
       console.log(message);
     }
   })
