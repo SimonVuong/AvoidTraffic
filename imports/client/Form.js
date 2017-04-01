@@ -13,7 +13,7 @@ class MyForm extends React.Component {
       email: '',
       phone: ''
     }
-    this.setNotification = this.setNotification.bind(this);
+    this.setAlert = this.setAlert.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
@@ -23,10 +23,10 @@ class MyForm extends React.Component {
     this.setState(obj);
   }
 
-  setNotification () {
+  setAlert () {
     let {hr, min, email, phone} = this.state;
     let minSeconds = (hr * 3600) + (min * 60);
-    Meteor.call('setNotification', this.props.fromPlaceId, this.props.toPlaceId, minSeconds, email, phone);
+    Meteor.call('setAlert', this.props.fromPlaceId, this.props.toPlaceId, minSeconds, email, phone);
     
   }
 
@@ -89,7 +89,7 @@ class MyForm extends React.Component {
             onChange={(e) => this.onChange(e.target.value, 'phone')} />
         </Form.Group>
         {/*type=button to prevent submitting*/}
-        <Button type='button' fluid style={{backgroundColor: '#63A651', color: 'white'}} onClick={this.setNotification}>
+        <Button type='button' fluid style={{backgroundColor: '#63A651', color: 'white'}} onClick={this.setAlert}>
           Set notification
         </Button>
       </Form>
