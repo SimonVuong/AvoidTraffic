@@ -38,7 +38,7 @@ class MainLayout extends React.Component {
       figure = (
         <Grid.Column verticalAlign='middle'>
           <Header textAlign='center' style={{fontSize: '4.5em', color: '#FFFFFF', fontWeight: 400}} fontFamily='Raleway'>
-            Receive an alert when traffic is better
+            Text me when traffic is better
           </Header>
         </Grid.Column>
       )

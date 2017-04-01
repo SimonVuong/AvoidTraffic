@@ -3,7 +3,6 @@ import React from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import Autocomplete from 'react-google-autocomplete';
 
-//TODO left off here. working on setNotification
 class MyForm extends React.Component {
   constructor (props) {
     super(props);
@@ -69,8 +68,7 @@ class MyForm extends React.Component {
             placeholder='0'
             onChange={(e) => this.onChange(e.target.value, 'min')} />
         </Form.Group>
-        <p>Alert me by...</p>
-        <Form.Group >
+        {/*<Form.Group >
           <Form.Field
             control='Input'
             label='Email'
@@ -78,7 +76,7 @@ class MyForm extends React.Component {
             type='Email'
             placeholder='you@example.com'
             onChange={(e) => this.onChange(e.target.value, 'email')} />
-        </Form.Group>
+        </Form.Group>*/}
         <Form.Group>
           <Form.Field
             control='Input'
