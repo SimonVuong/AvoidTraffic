@@ -87,7 +87,7 @@ class MyForm extends React.Component {
           rules: [
             {
               type: 'isPhoneNumber',
-              prompt: 'Please enter a valid phone number'
+              prompt: 'Please enter a 10 digit phone number 1234567890'
             }
           ]
         }
@@ -186,7 +186,7 @@ class MyForm extends React.Component {
             name = 'phone'
             width={16}
             type='text'
-            placeholder='xxx-xxx-xxxx'
+            placeholder='xxxxxxxxxx'
             onChange={(e) => this.onChange(e.target.value, 'phone')} />
         </Form.Group>
         {/*type=button to prevent submitting*/}
