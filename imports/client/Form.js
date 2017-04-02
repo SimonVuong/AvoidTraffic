@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Message } from 'semantic-ui-react';
 import { isValidNumber } from 'libphonenumber-js'
 import Autocomplete from 'react-google-autocomplete';
 
@@ -13,7 +13,9 @@ class MyForm extends React.Component {
       toText: '',
       hr: 1,
       min: 0,
-      phone: ''
+      phone: '',
+      status: null,
+      errDetail: null
     }
     this.setAlert = this.setAlert.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -22,8 +24,17 @@ class MyForm extends React.Component {
   }
 
   componentDidMount () {
+    //TODO FUTURE: when semantic-react is ready, use the new form validation
+
+    $.fn.form.settings.rules.hasFrom = () => {
+      return Boolean(this.state.fromText);
+    }
+
+    $.fn.form.settings.rules.hasTo = () => {
+      return Boolean(this.state.toText);
+    }    
+
     $.fn.form.settings.rules.isNotNegative = function (inputValue) {
-      console.log(inputValue);
       return inputValue >= 0;
     }
 
@@ -31,7 +42,8 @@ class MyForm extends React.Component {
       return isValidNumber(this.state.phone, 'US'); //TODO FUTURE: add support for other countries
     }
 
-    //TODO FUTURE: add this logic. problem was... how do i remove the error if one becomes non 0?
+    //TODO FUTURE: add this logic. problem was... how do i remove the error if one becomes non 0
+    //can probably use setState((prevState) => {}) but will save for later
     // $.fn.form.settings.rules.hrsAndMinsBothNotZero = () => {
     //   return (this.state.hr != 0 && this.state.min != 0)
     // }
@@ -42,7 +54,7 @@ class MyForm extends React.Component {
           identifier: 'from',
           rules: [
             {
-              type: 'empty',
+              type: 'hasFrom',
               prompt: 'Please enter an origin'
             }
           ]
@@ -51,7 +63,7 @@ class MyForm extends React.Component {
           identifier: 'to',
           rules: [
             {
-              type: 'empty',
+              type: 'hasTo',
               prompt: 'Please enter a destination'
             }
           ]
@@ -87,7 +99,7 @@ class MyForm extends React.Component {
           rules: [
             {
               type: 'isPhoneNumber',
-              prompt: 'Please enter a 10 digit phone number 1234567890'
+              prompt: 'Please enter a 10 digit phone number 1234567890  '
             }
           ]
         }
@@ -101,6 +113,10 @@ class MyForm extends React.Component {
       fromText: place.name + ', ' + place.vicinity
     });
     this.props.onSelectFrom(place);
+
+    let fromDiv = 'div.field:has(input[name="from"])'
+    $(fromDiv).removeClass('error');
+    $(fromDiv+' div.prompt').remove();
   }
 
   onSelectTo (place) {
@@ -108,9 +124,22 @@ class MyForm extends React.Component {
       toText: place.name + ', ' + place.vicinity
     });
     this.props.onSelectTo(place);
+
+    let toDiv = 'div.field:has(input[name="to"])'
+    $(toDiv).removeClass('error');
+    $(toDiv+' div.prompt').remove();
   }
 
   onChange (value, field) {
+    this.setState({
+      status: null,
+      errDetail: null
+    })
+
+    if (!value || !field) {
+      return;
+    }
+
     let obj = {};
     obj[field] = value;
     this.setState(obj);
@@ -121,22 +150,37 @@ class MyForm extends React.Component {
     if ($('.ui.form').form('is valid')) {
       let {fromText, toText, hr, min, phone} = this.state;
       let minSeconds = (hr * 3600) + (min * 60);
-      Meteor.call('setAlert', this.props.fromPlaceId, this.props.toPlaceId, fromText, toText, minSeconds, phone);
+
+      let callback = (err, res) => {
+        if (err) {
+          this.setState({
+            status: 'error',
+            errDetail: err.detail
+          })
+        } else {
+          this.setState({
+            status: 'success'
+          })
+        }
+      }
+
+      Meteor.call('setAlert', this.props.fromPlaceId, this.props.toPlaceId, fromText, toText,
+        minSeconds, phone, callback);
     }
   }
 
   render () {
-    //TODO: add validation
     return (
-      <Form size='big'>
+      <Form size='big' error={this.state.status === 'error'} success={this.state.status === 'success'}>
         <Form.Group>
           <Form.Field width={16}>
             <label>From</label>
+            {/*no args for onChange. onChange to reset this.state.state + this.state.errDetail, not change this.state.from*/}
             <Autocomplete
               placeholder='Enter starting location'
               name = 'from'
               onPlaceSelected={this.onSelectFrom}
-              onChange={(e) => this.onChange(e.target.value, 'fromText')}
+              onChange={this.onChange}
               types={['establishment', 'geocode']} /> {/*autocomplete places and addresses*/}
           </Form.Field>
         </Form.Group>
@@ -147,7 +191,7 @@ class MyForm extends React.Component {
               placeholder='Enter destination location'
               name = 'to'
               onPlaceSelected={this.onSelectTo}
-              onChange={(e) => this.onChange(e.target.value, 'toText')}
+              onChange={this.onChange}
               types={['establishment', 'geocode']} />
           </Form.Field>
         </Form.Group>
@@ -189,7 +233,15 @@ class MyForm extends React.Component {
             placeholder='xxxxxxxxxx'
             onChange={(e) => this.onChange(e.target.value, 'phone')} />
         </Form.Group>
-        {/*type=button to prevent submitting*/}
+        <Message
+          success
+          header='Alert set!'
+          content={'You will get a text when traffic gets better. Traffic Alert will stop checking '
+          + 'traffic after 1 hour.'} />
+        <Message
+          error
+          header='Alert failed to set'
+          content={this.state.errDetail} />
         <Button fluid style={{backgroundColor: '#63A651', color: 'white'}} onClick={this.setAlert}>
           Set notification
         </Button>

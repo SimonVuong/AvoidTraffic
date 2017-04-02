@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { isValidNumber } from 'libphonenumber-js'
+import SimpleSchema from 'simpl-schema';
 import sendText from './textService';
 import getTravelTime from './directionsService';
 
@@ -32,8 +34,25 @@ function convertSecondsToText (seconds) {
 
 //TODO FUTURE: send link for google maps when sending alert
 Meteor.methods({
-  setAlert (fromPlaceId, toPlaceId, fromText, toText, minSeconds, phone) {    
-    //TODO: add validation
+  setAlert (fromPlaceId, toPlaceId, fromText, toText, minSeconds, phone) {
+
+    try {
+      new SimpleSchema({
+        fromPlaceId: { type: Number },
+        toPlaceId: { type: String },
+        fromText: { type: String },
+        toText: { type: String },
+        minSeconds: { type: Number, min: 0 },
+        phone: { type: String, custom: function () { return (isValidNumber(this.value, 'US')) } },
+      }).validate({ fromPlaceId, toPlaceId, fromText, toText, minSeconds, phone });
+    } catch (err) {
+      //TODO FUTURE: figure out how to say which field caused error. err obj doenst have easy string
+      throw new Meteor.Error('validation error', err.details[0],
+      'One of the inputs is invalid. Please check your inputs');
+    }
+
+
+
     console.log('received alert set');
     let attempts = 1;
     let connectionId = this.connection.id;
@@ -62,7 +81,8 @@ Meteor.methods({
           clearInterval(timer);
         }
       }).catch((err) => {
-        console.log(err);
+        throw new Meteor.Error('google maps error', {fromPlaceId, toPlaceId}, 
+        'Google maps service failed. Please try again later');
         clearInterval(timer);
       });
     }
