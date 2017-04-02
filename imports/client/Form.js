@@ -3,17 +3,35 @@ import React from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import Autocomplete from 'react-google-autocomplete';
 
+
 class MyForm extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      fromText: '',
+      toText: '',
       hr: '',
       min: '',
-      email: '',
       phone: ''
     }
     this.setAlert = this.setAlert.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onSelectFrom = this.onSelectFrom.bind(this);
+    this.onSelectTo = this.onSelectTo.bind(this);
+  }
+
+  onSelectFrom (place) {
+    this.setState({
+      fromText: place.name + ', ' + place.vicinity
+    });
+    this.props.onSelectFrom(place);
+  }
+
+  onSelectTo (place) {
+    this.setState({
+      toText: place.name + ', ' + place.vicinity
+    });
+    this.props.onSelectTo(place);
   }
 
   onChange (value, field) {
@@ -23,10 +41,9 @@ class MyForm extends React.Component {
   }
 
   setAlert () {
-    let {hr, min, email, phone} = this.state;
+    let {fromText, toText, hr, min, phone} = this.state;
     let minSeconds = (hr * 3600) + (min * 60);
-    Meteor.call('setAlert', this.props.fromPlaceId, this.props.toPlaceId, minSeconds, email, phone);
-    
+    Meteor.call('setAlert', this.props.fromPlaceId, this.props.toPlaceId, fromText, toText, minSeconds, phone);
   }
 
   render () {
@@ -38,7 +55,8 @@ class MyForm extends React.Component {
             <label>From</label>
             <Autocomplete
               placeholder='Enter starting location'
-              onPlaceSelected={this.props.onSelectFrom}
+              onPlaceSelected={this.onSelectFrom}
+              onChange={(e) => this.onChange(e.target.value, 'fromText')}
               types={['establishment', 'geocode']} /> {/*autocomplete places and addresses*/}
           </Form.Field>
         </Form.Group>
@@ -47,7 +65,8 @@ class MyForm extends React.Component {
             <label>To</label>
             <Autocomplete
               placeholder='Enter destination location'
-              onPlaceSelected={this.props.onSelectTo}
+              onPlaceSelected={this.onSelectTo}
+              onChange={(e) => this.onChange(e.target.value, 'toText')}
               types={['establishment', 'geocode']} />
           </Form.Field>
         </Form.Group>

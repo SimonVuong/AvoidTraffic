@@ -2,13 +2,37 @@ import { Meteor } from 'meteor/meteor';
 import sendText from './textService';
 import getTravelTime from './directionsService';
 
-const ALERT_EXPERATION_SECONDS = 300; //5 mins
-const ALERT_ATTEMPT_INTERVAL_MILISECONDS = 60000; //1 min
+const ALERT_EXPERATION_SECONDS = 120; //2 mins
+const ALERT_ATTEMPT_INTERVAL_MILISECONDS = 30000; //30 seconds
+//ceil to give the user 1 more attempt
 const MAX_ALERT_ATTEMPTS = Math.ceil(ALERT_EXPERATION_SECONDS / (ALERT_ATTEMPT_INTERVAL_MILISECONDS / 1000));
 
-//TODO SIMON: include address/location so that the texts are more user friendly
+function convertSecondsToText (seconds) {
+  let mins = Math.floor(seconds / 60);
+  let hrs = Math.floor(mins / 60);
+
+  if (mins >= 60) {
+    mins = mins % 60;
+  }
+
+  if (hrs === 1) {
+    hrs = hrs + ' hr';
+  } else {
+    hrs = hrs + ' hrs';
+  }
+
+  if (mins === 1) {
+    mins = mins + ' min';
+  } else {
+    mins = mins + ' mins';
+  }
+
+  return hrs + ' and ' + mins;
+}
+
+//TODO FUTURE: send link for google maps when sending alert
 Meteor.methods({
-  setAlert (fromPlaceId, toPlaceId, minSeconds, email, phone) {
+  setAlert (fromPlaceId, toPlaceId, fromText, toText, minSeconds, phone) {    
     //TODO: add validation
     console.log('received alert set');
     let attempts = 1;
@@ -20,9 +44,9 @@ Meteor.methods({
 
       if (attempts > MAX_ALERT_ATTEMPTS) {
         console.log('alert expired');
-        //TODO SIMON: use hr and min to be more user friendly!
-        sendText(phone, 'Sorry. Your alert has expired after ' + ALERT_EXPERATION_SECONDS 
-          +'. Traffic never decreased to ' + minSeconds + ' or less.');
+        sendText(phone, 'Sorry. Your alert has expired after ' + convertSecondsToText(ALERT_EXPERATION_SECONDS) 
+          +'. Traffic from ' + fromText + ' to ' +toText + ' never decreased to '
+          + convertSecondsToText(minSeconds) + ' or less.');
         clearInterval(timer);
       }
 
@@ -33,7 +57,8 @@ Meteor.methods({
         let travelTime = res.json.routes[0].legs[0].duration;
         console.log('travel time is ' + travelTime.text);
         if (travelTime.value <= minSeconds) {
-          sendText(phone, 'Traffic is better. Drive is ' + travelTime.text + '.');
+          sendText(phone, 'Drive is ' + travelTime.text + ' from ' + fromText 
+          + ' to ' + toText + '.');
           clearInterval(timer);
         }
       }).catch((err) => {
