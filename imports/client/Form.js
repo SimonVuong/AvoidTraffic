@@ -11,7 +11,7 @@ class MyForm extends React.Component {
     this.state = {
       fromText: '',
       toText: '',
-      hr: 1,
+      hr: 0,
       min: 0,
       phone: '',
       status: null,
@@ -208,6 +208,7 @@ class MyForm extends React.Component {
             control='Input'
             name = 'hr'
             label='Hr'
+            min='0'
             type='number'
             value={this.state.hr}
             onChange={(e) => this.onChange(e.target.value, 'hr')} />
@@ -216,6 +217,7 @@ class MyForm extends React.Component {
             control='Input'
             name = 'min'
             label='Min'
+            min='0'
             type='number'
             value={this.state.min}
             onChange={(e) => this.onChange(e.target.value, 'min')} />
