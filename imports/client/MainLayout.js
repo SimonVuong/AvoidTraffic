@@ -53,7 +53,7 @@ class MainLayout extends React.Component {
       <Grid padded style={{height: 'inherit'}}>
         {/*padded so that there's space between edges and grid. get height of root (which gets height
         of body) so that right content can be height of body*/}
-        <Grid.Column width={4}> {/*TODO tie this color to css*/}
+        <Grid.Column computer={'4'} tablet={'4'} mobile={'16'}> {/*TODO tie this color to css*/}
           <NotificationForm
             fromPlaceId={this.state.fromPlaceId}
             toPlaceId={this.state.toPlaceId}
@@ -61,7 +61,7 @@ class MainLayout extends React.Component {
             onSelectTo={this.onSelectTo}/>
         </Grid.Column>
         {/*no padding so map is flush with screen*/}
-        <Grid.Column width={12} style={{padding: 0, backgroundImage: 'url("/skySauna.jpg")', backgroundSize: 'cover'}}> 
+        <Grid.Column width={12} only='computer tablet' style={{padding: 0, backgroundImage: 'url("/skySauna.jpg")', backgroundSize: 'cover'}}> 
           {/*margins 0 and height 100% to fill parent column height, then vertically center its column to make
           content centered vertically */}
           <Grid style={{height: '100%', margin: 0}}>

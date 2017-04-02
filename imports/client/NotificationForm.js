@@ -21,6 +21,7 @@ function NotificationForm (props) {
       </Grid.Column>
       <Grid.Column style={{color: '#A9A9A9', paddingTop: 0}}>
         *Traffic Alert erases all data after an alert is complete. It does not sell or rent your data.
+        It will not send promotional or marketing messages.
       </Grid.Column>
     </Grid>
   )
