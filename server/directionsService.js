@@ -3,7 +3,7 @@ import googleMaps from '@google/maps';
 
 //use one maps client
 const MAPS = googleMaps.createClient({
-  key: 'AIzaSyA30HDli8UuK1stNdNAfm_eN761_hm96iI', //TODO: use environment variables
+  key: process.env.GOOGLE_MAPS_KEY,
   Promise: Promise
 });
 
