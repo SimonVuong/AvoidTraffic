@@ -36,37 +36,52 @@ class MainLayout extends React.Component {
     let figure;
     if (!this.state.fromPlaceId || !this.state.toPlaceId) {
       figure = (
-        <Grid.Column verticalAlign='middle'>
-          <Header textAlign='center' style={{fontSize: '4.5em', color: '#FFFFFF', fontWeight: 400}} fontFamily='Raleway'>
-            Text me when traffic is better
-          </Header>
-        </Grid.Column>
+        <Grid style={{height: '100%', margin: 0}}>
+          {/*margins 0 and height 100% to fill parent column height, then vertically center its column to make
+          content centered vertically */}
+          <Grid.Column verticalAlign='middle'>
+            <Header textAlign='center' style={{fontSize: '4.5em', color: '#FFFFFF', fontWeight: 400}} fontFamily='Raleway'>
+              Text me when traffic is better
+            </Header>
+          </Grid.Column>
+        </Grid>
       )
     } else {
       let src='https://www.google.com/maps/embed/v1/directions?origin=place_id:' + this.state.fromPlaceId + 
       '&destination=place_id:' + this.state.toPlaceId + '&key=AIzaSyCMmu_dSLLqfqhlnGpLyuyQazYaG_m_Qcs';
       //no border or padding so the map takes up the entire container
-      figure = <iframe width='100%' height='100%' style={{border: 0, padding: 0}} src={src} />;
+      figure = (
+        <Grid style={{height: '100%', margin: 0}}>
+          <iframe width='100%' height='100%' style={{border: 0, padding: 0}} src={src} />
+        </Grid>
+      );
+    }
+
+    let figureColumnStyle = {
+      padding: 0, //no padding so map is flush with screen
+      backgroundImage: 'url("/skySauna.jpg")',
+      backgroundSize: 'cover'
     }
 
     return (
       <Grid padded style={{height: 'inherit'}}>
         {/*padded so that there's space between edges and grid. get height of root (which gets height
         of body) so that right content can be height of body*/}
-        <Grid.Column computer={'4'} tablet={'4'} mobile={'16'}> {/*TODO tie this color to css*/}
+        {/*mobile doesnt work here. could be due to react semantic beta. so use tablet*/}
+        <Grid.Column computer={4} tablet={16}> {/*TODO tie this color to css*/}
           <NotificationForm
             fromPlaceId={this.state.fromPlaceId}
             toPlaceId={this.state.toPlaceId}
             onSelectFrom={this.onSelectForm} 
             onSelectTo={this.onSelectTo}/>
         </Grid.Column>
-        {/*no padding so map is flush with screen*/}
-        <Grid.Column width={12} only='computer tablet' style={{padding: 0, backgroundImage: 'url("/skySauna.jpg")', backgroundSize: 'cover'}}> 
-          {/*margins 0 and height 100% to fill parent column height, then vertically center its column to make
-          content centered vertically */}
-          <Grid style={{height: '100%', margin: 0}}>
-            {figure}
-          </Grid>
+        <Grid.Column width={12} only='computer' style={figureColumnStyle}> 
+          {figure}
+        </Grid.Column>
+        {/*for some reason mobile doesnt work. could be due to react semantic beta stage. so use tablet.
+        default height is small for some reason, so expand it*/}
+        <Grid.Column width={16} only='tablet' style={{...figureColumnStyle, height: '60%'}}> 
+          {figure}
         </Grid.Column>
       </Grid>
     )
