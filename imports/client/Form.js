@@ -39,7 +39,6 @@ class MyForm extends React.Component {
     }
 
     $.fn.form.settings.rules.isPhoneNumber = () => {
-      return true;
       return isValidNumber(this.state.phone, 'US'); //TODO FUTURE: add support for other countries
     }
 
@@ -246,8 +245,8 @@ class MyForm extends React.Component {
         <Message
           success
           header='Alert set!'
-          content={'You will get text when traffic gets better. Traffic Alert will stop checking '
-          + 'traffic after 1 hour.'} />
+          content={"You'll get a text when traffic gets better. Traffic Alert will stop checking "
+          + "traffic after 1 hour."} />
         {/*style so invalid form submission doesnt trigger error message*/}
         <Message
           style={this.state.status === 'error' ? {} : {display: 'none'}}
