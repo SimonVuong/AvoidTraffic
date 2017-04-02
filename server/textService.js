@@ -10,7 +10,7 @@ let textService = twilio(ACCOUNT_SID, AUTH_TOKEN);
 export default function sendText (to, body) {
   console.log('about to send text');
   textService.messages.create({
-    to: '+16095138166',
+    to,
     from: '+16093859646',
     body
   }, function (err, message) {
