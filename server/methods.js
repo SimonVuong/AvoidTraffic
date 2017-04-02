@@ -38,7 +38,7 @@ Meteor.methods({
 
     try {
       new SimpleSchema({
-        fromPlaceId: { type: Number },
+        fromPlaceId: { type: String },
         toPlaceId: { type: String },
         fromText: { type: String },
         toText: { type: String },
