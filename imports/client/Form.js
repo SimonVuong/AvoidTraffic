@@ -39,6 +39,7 @@ class MyForm extends React.Component {
     }
 
     $.fn.form.settings.rules.isPhoneNumber = () => {
+      return true;
       return isValidNumber(this.state.phone, 'US'); //TODO FUTURE: add support for other countries
     }
 
@@ -136,7 +137,8 @@ class MyForm extends React.Component {
       errDetail: null
     })
 
-    if (!value || !field) {
+    //so onChange of from and to don't change state
+    if (field === undefined) {
       return;
     }
 
@@ -153,9 +155,11 @@ class MyForm extends React.Component {
 
       let callback = (err, res) => {
         if (err) {
+
+          console.log(err.message);
           this.setState({
             status: 'error',
-            errDetail: err.detail
+            errDetail: err.details
           })
         } else {
           this.setState({
@@ -163,7 +167,6 @@ class MyForm extends React.Component {
           })
         }
       }
-
       Meteor.call('setAlert', this.props.fromPlaceId, this.props.toPlaceId, fromText, toText,
         minSeconds, phone, callback);
     }
@@ -171,7 +174,11 @@ class MyForm extends React.Component {
 
   render () {
     return (
-      <Form size='big' error={this.state.status === 'error'} success={this.state.status === 'success'}>
+      <Form
+        onSubmit={this.setAlert}
+        size='big' 
+        error={this.state.status === 'error'}
+        success={this.state.status === 'success'}>
         <Form.Group>
           <Form.Field width={16}>
             <label>From</label>
@@ -233,21 +240,22 @@ class MyForm extends React.Component {
             placeholder='xxxxxxxxxx'
             onChange={(e) => this.onChange(e.target.value, 'phone')} />
         </Form.Group>
+        <Button fluid style={{backgroundColor: '#63A651', color: 'white'}}>
+          Set notification
+        </Button>
         <Message
           success
           header='Alert set!'
-          content={'You will get a text when traffic gets better. Traffic Alert will stop checking '
+          content={'You will get text when traffic gets better. Traffic Alert will stop checking '
           + 'traffic after 1 hour.'} />
+        {/*style so invalid form submission doesnt trigger error message*/}
         <Message
+          style={this.state.status === 'error' ? {} : {display: 'none'}}
           error
           header='Alert failed to set'
           content={this.state.errDetail} />
-        <Button fluid style={{backgroundColor: '#63A651', color: 'white'}} onClick={this.setAlert}>
-          Set notification
-        </Button>
       </Form>
     )
   }
 }
-
 export default MyForm;

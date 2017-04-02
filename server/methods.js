@@ -37,21 +37,39 @@ Meteor.methods({
   setAlert (fromPlaceId, toPlaceId, fromText, toText, minSeconds, phone) {
 
     try {
-      new SimpleSchema({
-        fromPlaceId: { type: String },
-        toPlaceId: { type: String },
-        fromText: { type: String },
-        toText: { type: String },
-        minSeconds: { type: Number, min: 0 },
-        phone: { type: String, custom: function () { return (isValidNumber(this.value, 'US')) } },
-      }).validate({ fromPlaceId, toPlaceId, fromText, toText, minSeconds, phone });
+      let validation = new SimpleSchema({
+        fromPlaceId: { 
+          type: String,
+          label: 'From placeId'
+        },
+        toPlaceId: { 
+          type: String,
+          label: 'To placeId',
+        },
+        fromText: { 
+          type: String,
+          label: 'From input'
+        },
+        toText: { 
+          type: String ,
+          label: 'To input'
+        },
+        minSeconds: { 
+          type: Number,
+          label: 'Time inputs',
+          min: 0 
+        },
+        phone: { 
+          type: String,
+          label: 'Phone number',
+          custom: function ()  {
+           return isValidNumber(this.value, 'US') ? undefined : 'Phone number invalid'
+          } 
+        },
+      }).validate({ fromPlaceId, toPlaceId, fromText, toText, minSeconds, phone});
     } catch (err) {
-      //TODO FUTURE: figure out how to say which field caused error. err obj doenst have easy string
-      throw new Meteor.Error('validation error', err.details[0],
-      'One of the inputs is invalid. Please check your inputs');
+      throw new Meteor.Error('validation error', err.details[0], err.message);
     }
-
-
 
     console.log('received alert set');
     let attempts = 1;
