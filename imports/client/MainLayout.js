@@ -68,21 +68,50 @@ class MainLayout extends React.Component {
         {/*padded so that there's space between edges and grid. get height of root (which gets height
         of body) so that right content can be height of body*/}
         {/*mobile doesnt work here. could be due to react semantic beta. so use tablet*/}
-        <Grid.Column computer={4} tablet={16}> {/*TODO tie this color to css*/}
+        <Grid.Column computer={4} only='computer'>
           <NotificationForm
+            size='big'
             fromPlaceId={this.state.fromPlaceId}
             toPlaceId={this.state.toPlaceId}
             onSelectFrom={this.onSelectForm} 
             onSelectTo={this.onSelectTo}/>
         </Grid.Column>
-        <Grid.Column width={12} only='computer' style={figureColumnStyle}> 
+        <Grid.Column computer={12} only='computer' style={figureColumnStyle}> 
           {figure}
         </Grid.Column>
+
+        <Grid.Column tablet={16} only='tablet'>
+          <NotificationForm
+            size='massive'
+            fromPlaceId={this.state.fromPlaceId}
+            toPlaceId={this.state.toPlaceId}
+            onSelectFrom={this.onSelectForm} 
+            onSelectTo={this.onSelectTo}/>
+        </Grid.Column>
+        <Grid.Column tablet={16} only='tablet' style={{...figureColumnStyle, height: '30%'}}> 
+          {figure}
+        </Grid.Column>
+
+        {/*for some reason... tablet only affects MOBILE view and RESPONSIVE TABLET dimensions.
+        mobile onlly affects just RESPONSIVE TABLET*/}
+        <Grid.Column mobile={16} only='mobile'>
+          <NotificationForm
+            size='big'
+            fromPlaceId={this.state.fromPlaceId}
+            toPlaceId={this.state.toPlaceId}
+            onSelectFrom={this.onSelectForm} 
+            onSelectTo={this.onSelectTo}/>
+        </Grid.Column>
+
+
+
+
+
         {/*for some reason mobile doesnt work. could be due to react semantic beta stage. so use tablet.
         default height is small for some reason, so expand it*/}
-        <Grid.Column width={16} only='tablet' style={{...figureColumnStyle, height: '60%'}}> 
+        {/*<Grid.Column mobile={16} only='mobile' style={{...figureColumnStyle, height: '60%'}}> 
           {figure}
-        </Grid.Column>
+        </Grid.Column>*/}
       </Grid>
     )
   }

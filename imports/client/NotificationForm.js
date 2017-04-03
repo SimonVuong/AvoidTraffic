@@ -3,17 +3,22 @@ import { Grid, Header, Icon } from 'semantic-ui-react';
 import Form from './Form';
 
 function NotificationForm (props) {
+
+  //massive or big
+  let fontSize = props === 'big' ? '3.3em' : '3em'
+
   return (
     <Grid columns={1}>
       {/*make header container blue*/}
       <Grid.Column style={{background: '#2185D0'}}>
         {/*3em is 1em larger than 'huge'*/}
-        <Header style={{color: '#FFFFFF', fontSize: '3em'}}>
+        <Header style={{color: '#FFFFFF', fontSize}}>
           Traffic Alert
         </Header>
       </Grid.Column>
       <Grid.Column>
         <Form
+          size={props.size}
           fromPlaceId={props.fromPlaceId}
           toPlaceId={props.toPlaceId}
           onSelectFrom={props.onSelectFrom}

@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import ReactDOM from 'react-dom'
 import { Form, Button, Message } from 'semantic-ui-react';
 import { isValidNumber } from 'libphonenumber-js'
 import Autocomplete from 'react-google-autocomplete';
@@ -48,7 +49,7 @@ class MyForm extends React.Component {
     //   return (this.state.hr != 0 && this.state.min != 0)
     // }
 
-    $('.ui.form').form({
+    $(ReactDOM.findDOMNode(this)).form({
       fields: {
         from: {
           identifier: 'from',
@@ -148,13 +149,12 @@ class MyForm extends React.Component {
 
   setAlert (e) {
     e.preventDefault();
-    if ($('.ui.form').form('is valid')) {
+    if ($(ReactDOM.findDOMNode(this)).form('is valid')) {
       let {fromText, toText, hr, min, phone} = this.state;
       let minSeconds = (hr * 3600) + (min * 60);
 
       let callback = (err, res) => {
         if (err) {
-
           console.log(err.message);
           this.setState({
             status: 'error',
@@ -175,7 +175,7 @@ class MyForm extends React.Component {
     return (
       <Form
         onSubmit={this.setAlert}
-        size='big' 
+        size={this.props.size} 
         error={this.state.status === 'error'}
         success={this.state.status === 'success'}>
         <Form.Group>
