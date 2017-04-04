@@ -59,59 +59,43 @@ class MainLayout extends React.Component {
 
     let figureColumnStyle = {
       padding: 0, //no padding so map is flush with screen
-      backgroundImage: 'url("/skySauna.jpg")',
+      backgroundImage: 'url("/skySaunaSmall.jpg")',
       backgroundSize: 'cover'
     }
+
+    let notificationForm = (
+      <NotificationForm
+        fromPlaceId={this.state.fromPlaceId}
+        toPlaceId={this.state.toPlaceId}
+        onSelectFrom={this.onSelectForm} 
+        onSelectTo={this.onSelectTo}/>
+    );
 
     return (
       <Grid padded style={{height: 'inherit'}}>
         {/*padded so that there's space between edges and grid. get height of root (which gets height
-        of body) so that right content can be height of body*/}
-        {/*mobile doesnt work here. could be due to react semantic beta. so use tablet*/}
+        of body) so that right content can be height of body*/} 
         <Grid.Column computer={4} only='computer'>
-          <NotificationForm
-            size='big'
-            fromPlaceId={this.state.fromPlaceId}
-            toPlaceId={this.state.toPlaceId}
-            onSelectFrom={this.onSelectForm} 
-            onSelectTo={this.onSelectTo}/>
+          {notificationForm}
         </Grid.Column>
         <Grid.Column computer={12} only='computer' style={figureColumnStyle}> 
           {figure}
         </Grid.Column>
 
-        <Grid.Column tablet={16} only='tablet'>
-          <NotificationForm
-            size='massive'
-            fromPlaceId={this.state.fromPlaceId}
-            toPlaceId={this.state.toPlaceId}
-            onSelectFrom={this.onSelectForm} 
-            onSelectTo={this.onSelectTo}/>
+        <Grid.Column tablet={6} only='tablet'>
+          {notificationForm}
         </Grid.Column>
-        <Grid.Column tablet={16} only='tablet' style={{...figureColumnStyle, height: '30%'}}> 
+        <Grid.Column tablet={10} only='tablet' style={figureColumnStyle}> 
           {figure}
         </Grid.Column>
 
-        {/*for some reason... tablet only affects MOBILE view and RESPONSIVE TABLET dimensions.
-        mobile onlly affects just RESPONSIVE TABLET*/}
         <Grid.Column mobile={16} only='mobile'>
-          <NotificationForm
-            size='big'
-            fromPlaceId={this.state.fromPlaceId}
-            toPlaceId={this.state.toPlaceId}
-            onSelectFrom={this.onSelectForm} 
-            onSelectTo={this.onSelectTo}/>
+          {notificationForm}
         </Grid.Column>
-
-
-
-
-
-        {/*for some reason mobile doesnt work. could be due to react semantic beta stage. so use tablet.
-        default height is small for some reason, so expand it*/}
-        {/*<Grid.Column mobile={16} only='mobile' style={{...figureColumnStyle, height: '60%'}}> 
+        {/*default height is small, so expand it*/}
+        <Grid.Column mobile={16} only='mobile' style={{...figureColumnStyle, height: '75%'}}> 
           {figure}
-        </Grid.Column>*/}
+        </Grid.Column>
       </Grid>
     )
   }

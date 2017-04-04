@@ -175,7 +175,6 @@ class MyForm extends React.Component {
     return (
       <Form
         onSubmit={this.setAlert}
-        size={this.props.size} 
         error={this.state.status === 'error'}
         success={this.state.status === 'success'}>
         <Form.Group>
