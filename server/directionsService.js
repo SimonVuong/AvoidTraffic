@@ -12,6 +12,7 @@ export default function getTravelTime (fromPlaceId, toPlaceId) {
   let query = {
     origin: 'place_id:' + fromPlaceId,
     destination: 'place_id:' + toPlaceId,
+    departure_time: 'now' //otherwise we dont get duration based on traffic but instead average
   };
 
   return MAPS.directions(query).asPromise();

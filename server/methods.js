@@ -91,7 +91,7 @@ Meteor.methods({
         //we are guaranteed to have only 1 route because the query doesnt set alternatives: true
         //legs are 'sections' of the directions that are created by waypoints. so if there are no
         //waypoints, routes is guaranteed to have 1 leg
-        let travelTime = res.json.routes[0].legs[0].duration;
+        let travelTime = res.json.routes[0].legs[0].duration_in_trafic;
         console.log('travel time is ' + travelTime.text);
         if (travelTime.value <= minSeconds) {
           sendText(phone, 'Drive is ' + travelTime.text + ' from ' + fromText 
