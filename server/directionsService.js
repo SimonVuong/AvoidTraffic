@@ -8,12 +8,13 @@ const MAPS = googleMaps.createClient({
 });
 
 export default function getTravelTime (fromPlaceId, toPlaceId) {
-  console.log('about to get directions from ' + fromPlaceId + ' to ' +toPlaceId);
   let query = {
     origin: 'place_id:' + fromPlaceId,
     destination: 'place_id:' + toPlaceId,
-    departure_time: 'now' //otherwise we dont get duration based on traffic but instead average
+    departure_time: new Date()//otherwise we dont get duration based on traffic
   };
+
+  console.log(query);
 
   return MAPS.directions(query).asPromise();
 }

@@ -4,8 +4,9 @@ import SimpleSchema from 'simpl-schema';
 import sendText from './textService';
 import getTravelTime from './directionsService';
 
-const ALERT_EXPERATION_SECONDS = 3600; //1 hr
+const ALERT_EXPERATION_SECONDS = 7200; //2 hr
 const ALERT_ATTEMPT_INTERVAL_MILISECONDS = 300000; //5 minutes
+
 //ceil to give the user 1 more attempt
 const MAX_ALERT_ATTEMPTS = Math.ceil(ALERT_EXPERATION_SECONDS / (ALERT_ATTEMPT_INTERVAL_MILISECONDS / 1000));
 
@@ -87,11 +88,12 @@ Meteor.methods({
         clearInterval(timer);
       }
 
+      console.log('about to get directions from ' + fromText + ' to ' +toText);
       getTravelTime(fromPlaceId, toPlaceId).then((res) => {
         //we are guaranteed to have only 1 route because the query doesnt set alternatives: true
         //legs are 'sections' of the directions that are created by waypoints. so if there are no
         //waypoints, routes is guaranteed to have 1 leg
-        let travelTime = res.json.routes[0].legs[0].duration_in_trafic;
+        let travelTime = res.json.routes[0].legs[0].duration_in_traffic;
         console.log('travel time is ' + travelTime.text);
         if (travelTime.value <= minSeconds) {
           sendText(phone, 'Drive is ' + travelTime.text + ' from ' + fromText 
@@ -99,6 +101,7 @@ Meteor.methods({
           clearInterval(timer);
         }
       }).catch((err) => {
+        console.log(err);
         throw new Meteor.Error('google maps error', {fromPlaceId, toPlaceId}, 
         'Google maps service failed. Please try again later');
         clearInterval(timer);

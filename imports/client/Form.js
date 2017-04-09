@@ -247,7 +247,7 @@ class MyForm extends React.Component {
           success
           header='Alert set!'
           content={"You'll get a text when traffic gets better. Traffic Alert will stop checking "
-          + "traffic after 1 hour."} />
+          + "traffic after 2 hours."} />
         {/*style so invalid form submission doesnt trigger error message*/}
         <Message
           style={this.state.status === 'error' ? {} : {display: 'none'}}

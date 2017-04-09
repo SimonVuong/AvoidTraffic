@@ -11,7 +11,7 @@ export default function sendText (to, body) {
   console.log('about to send text');
   textService.messages.create({
     to,
-    from: '+16093859646',
+    from: MY_NUMBER,
     body
   }, function (err, message) {
     if (err) {
