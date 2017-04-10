@@ -40,8 +40,8 @@ class MainLayout extends React.Component {
           {/*margins 0 and height 100% to fill parent column height, then vertically center its column to make
           content centered vertically */}
           <Grid.Column verticalAlign='middle'>
-            <Header textAlign='center' style={{fontSize: '4.5em', color: '#FFFFFF', fontWeight: 400}} fontFamily='Raleway'>
-              Text me when traffic is better
+            <Header textAlign='center' style={{fontSize: '3.5em', color: '#FFFFFF', fontWeight: 400}} fontFamily='Raleway'>
+              Text me when traffic is better, leave later and avoid traffic
             </Header>
           </Grid.Column>
         </Grid>
