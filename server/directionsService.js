@@ -14,7 +14,5 @@ export default function getTravelTime (fromPlaceId, toPlaceId) {
     departure_time: new Date()//otherwise we dont get duration based on traffic
   };
 
-  console.log(query);
-
   return MAPS.directions(query).asPromise();
 }
