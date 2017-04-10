@@ -7,6 +7,8 @@ import getTravelTime from './directionsService';
 const ALERT_EXPERATION_SECONDS = 7200; //2 hr
 const ALERT_ATTEMPT_INTERVAL_MILISECONDS = 300000; //5 minutes
 
+// const ALERT_EXPERATION_SECONDS = 3; //2 hr
+// const ALERT_ATTEMPT_INTERVAL_MILISECONDS = 1000; //5 minutes
 //ceil to give the user 1 more attempt
 const MAX_ALERT_ATTEMPTS = Math.ceil(ALERT_EXPERATION_SECONDS / (ALERT_ATTEMPT_INTERVAL_MILISECONDS / 1000));
 
