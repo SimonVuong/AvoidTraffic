@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import Restivus from 'nimble:restivus'
 import { isValidNumber } from 'libphonenumber-js'
 import SimpleSchema from 'simpl-schema';
 import sendText from './textService';
@@ -113,3 +114,14 @@ Meteor.methods({
     let timer = setInterval(attemptAlert, ALERT_ATTEMPT_INTERVAL_MILISECONDS);
   }
 });
+
+var Api = new Restivus({
+  prettyJson: true
+});
+
+Api.addRoute('setAlert/:fromPlaceId:toPlaceId:fromText:toText:minSeconds:phone', {
+    post: function () {
+      Meteor.call(setAlert, this.urlParams.fromPlaceId, this.urlParams.toPlaceId, 
+      this.urlParams.fromText, this.urlParams.toText, this.urlParams.minSeconds, this.urlParams.phone)
+    }
+  });
