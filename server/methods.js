@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import Restivus from 'nimble:restivus'
 import { isValidNumber } from 'libphonenumber-js'
 import SimpleSchema from 'simpl-schema';
 import sendText from './textService';
@@ -39,7 +38,6 @@ function convertSecondsToText (seconds) {
 //TODO FUTURE: send link for google maps when sending alert
 Meteor.methods({
   setAlert (fromPlaceId, toPlaceId, fromText, toText, minSeconds, phone) {
-
     try {
       let validation = new SimpleSchema({
         fromPlaceId: { 
@@ -77,10 +75,9 @@ Meteor.methods({
 
     console.log('received alert set');
     let attempts = 1;
-    let connectionId = this.connection.id;
 
     let attemptAlert = function () {
-      console.log('attempting alert ' + attempts + ' for ' + connectionId + ' with ' + minSeconds + ' threshold');
+      console.log('attempting alert ' + attempts + ' with ' + minSeconds + ' threshold');
       attempts++;
 
       if (attempts > MAX_ALERT_ATTEMPTS) {
@@ -114,14 +111,3 @@ Meteor.methods({
     let timer = setInterval(attemptAlert, ALERT_ATTEMPT_INTERVAL_MILISECONDS);
   }
 });
-
-var Api = new Restivus({
-  prettyJson: true
-});
-
-Api.addRoute('setAlert/:fromPlaceId:toPlaceId:fromText:toText:minSeconds:phone', {
-    post: function () {
-      Meteor.call(setAlert, this.urlParams.fromPlaceId, this.urlParams.toPlaceId, 
-      this.urlParams.fromText, this.urlParams.toText, this.urlParams.minSeconds, this.urlParams.phone)
-    }
-  });

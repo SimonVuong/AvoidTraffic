@@ -8,6 +8,7 @@
   "dependencies": {
     "@google/maps": "^0.3.1",
     "babel-runtime": "^6.20.0",
+    "bcrypt": "^1.0.2",
     "libphonenumber-js": "^0.4.4",
     "meteor-node-stubs": "~0.2.4",
     "moment": "^2.18.1",

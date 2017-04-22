@@ -166,6 +166,7 @@ class MyForm extends React.Component {
           })
         }
       }
+
       Meteor.call('setAlert', this.props.fromPlaceId, this.props.toPlaceId, fromText, toText,
         minSeconds, phone, callback);
     }
